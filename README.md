@@ -1,6 +1,6 @@
 # SFML-Chess
 ## By Alex Tuck
-Project is an implementation of chess, created in C++ with the SFML library. Chess can be played against the computer, or against another player locally.  
+Project is an implementation of chess, created in C++ with the SFML library. Chess can be played against the computer, or against another player locally. Chess is dependent on SFML, it will not work without it.
 
 [SFML website](https://www.sfml-dev.org/)
 
