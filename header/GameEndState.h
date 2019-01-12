@@ -17,6 +17,12 @@ public:
 	virtual bool update(sf::Time dt);
 	virtual bool handleEvent(const sf::Event & event);
 
+	sf::Text gameOverMessage;
+
+	sf::Text yes;
+	sf::Text no;
+	sf::Text PlayAgain;
+
 private:
 	//Initialize the game over message
 	void setGOMessage();
@@ -27,7 +33,7 @@ private:
 
 	void setPlayAgain();
 
-	void mouseButtonPressed(const sf::Event &event);
+	virtual void mouseButtonPressed(const sf::Event &event);
 
 	//Resize messages too
 	void drawMessages();
@@ -35,12 +41,8 @@ private:
 	//Change message color if mouse over it
 	void mouseHoverHighlight(sf::Text &message);
 
-private:
-	sf::Text gameOverMessage;
 
-	sf::Text yes;
-	sf::Text no;
-	sf::Text PlayAgain;
+	
 
 
 

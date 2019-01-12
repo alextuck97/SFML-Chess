@@ -1,6 +1,6 @@
-#include "..\header\GameState.h"
+#include "..\header\GamePvPState.h"
 
-GameState::GameState(StateStack & stack, Context context) : State(stack, context), gameBoard(8)
+GamePvPState::GamePvPState(StateStack & stack, Context context) : State(stack, context), gameBoard(8)
 {
 	initializeBoard();
 	initTextureMap();
@@ -20,7 +20,7 @@ GameState::GameState(StateStack & stack, Context context) : State(stack, context
 }
 
 //Delete game piece objects
-GameState::~GameState()
+GamePvPState::~GamePvPState()
 {
 	for (auto & itr1 = gameBoard.rbegin(); itr1 != gameBoard.rend(); itr1++)
 	{
@@ -31,33 +31,34 @@ GameState::~GameState()
 	}
 }
 
-GamePiece::GamePiece(Pieces piece, Orientation orientation,  sf::Vector2f &position, PieceColor color, bool inPlay)
+GamePiece::GamePiece(Pieces piece, Orientation orientation,  sf::Vector2f &position, PieceColor color,int value, bool inPlay)
 {
 	this->piece = piece;
 	this->orientation = orientation;
 	this->position = position;
 	this->color = color;
+	this->value = value;
 	this->inPlay = inPlay;
 }
 
-std::list<sf::Vector2f> * GameState::getMoves(GamePiece piece)
+std::list<sf::Vector2f> * GamePvPState::getMoves(GamePiece piece)
 {
 	return (*mMoves.getMoveFunction(piece.piece))(piece.position, piece.color);
 }
 
 
-void GameState::draw()
+void GamePvPState::draw()
 {
 	drawGameBoard();
 }
 
 
-bool GameState::update(sf::Time dt)
+bool GamePvPState::update(sf::Time dt)
 {
-	std::cout << "I like to update too" << std::endl;
+	//std::cout << "I like to update too" << std::endl;
 	return true;
 }
-bool GameState::handleEvent(const sf::Event & event)
+bool GamePvPState::handleEvent(const sf::Event & event)
 {
 	if (event.type == sf::Event::Resized)
 	{
@@ -74,21 +75,21 @@ bool GameState::handleEvent(const sf::Event & event)
 	return true;
 }
 
-void GameState::initializeBoard()
+void GamePvPState::initializeBoard()
 {
 	//Fill in starting black pieces
-	gameBoard[0].push_back(new GamePiece(Rook, Left, sf::Vector2f(0, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(Knight, Left, sf::Vector2f(1, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(Bishop, Left, sf::Vector2f(2, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(Queen, Royalty, sf::Vector2f(3, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(King, Royalty, sf::Vector2f(4, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(Bishop, Right, sf::Vector2f(5, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(Knight, Right, sf::Vector2f(6, 0), Black, true));
-	gameBoard[0].push_back(new GamePiece(Rook, Right, sf::Vector2f(7, 0), Black, true));
+	gameBoard[0].push_back(new GamePiece(Rook, Left, sf::Vector2f(0, 0), Black,5, true));
+	gameBoard[0].push_back(new GamePiece(Knight, Left, sf::Vector2f(1, 0), Black,3, true));
+	gameBoard[0].push_back(new GamePiece(Bishop, Left, sf::Vector2f(2, 0), Black,3, true));
+	gameBoard[0].push_back(new GamePiece(Queen, Royalty, sf::Vector2f(3, 0), Black,9, true));
+	gameBoard[0].push_back(new GamePiece(King, Royalty, sf::Vector2f(4, 0), Black,1000, true));
+	gameBoard[0].push_back(new GamePiece(Bishop, Right, sf::Vector2f(5, 0), Black,3, true));
+	gameBoard[0].push_back(new GamePiece(Knight, Right, sf::Vector2f(6, 0), Black,3, true));
+	gameBoard[0].push_back(new GamePiece(Rook, Right, sf::Vector2f(7, 0), Black,5, true));
 	
 	for (int i = 0; i < 8; i++)
 	{
-		gameBoard[1].push_back(new GamePiece(Pawn, NA, sf::Vector2f(i, 1), Black, true));
+		gameBoard[1].push_back(new GamePiece(Pawn, NA, sf::Vector2f(i, 1), Black,1, true));
 	}
 
 	//Fill in blank spaces
@@ -96,29 +97,29 @@ void GameState::initializeBoard()
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			gameBoard[i].push_back(new GamePiece(None, NA, sf::Vector2f(j, i), Unaffiliated, false));
+			gameBoard[i].push_back(new GamePiece(None, NA, sf::Vector2f(j, i), Unaffiliated,0, false));
 		}
 	}
 	
 	//Fill in starting white pieces
-	gameBoard[7].push_back(new GamePiece(Rook, Left, sf::Vector2f(0, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(Knight, Left, sf::Vector2f(1, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(Bishop, Left, sf::Vector2f(2, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(Queen, Royalty, sf::Vector2f(3, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(King, Royalty, sf::Vector2f(4, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(Bishop, Right, sf::Vector2f(5, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(Knight, Right, sf::Vector2f(6, 7), White, true));
-	gameBoard[7].push_back(new GamePiece(Rook, Right, sf::Vector2f(7, 7), White, true));
+	gameBoard[7].push_back(new GamePiece(Rook, Left, sf::Vector2f(0, 7), White,5, true));
+	gameBoard[7].push_back(new GamePiece(Knight, Left, sf::Vector2f(1, 7), White,3, true));
+	gameBoard[7].push_back(new GamePiece(Bishop, Left, sf::Vector2f(2, 7), White, 3,true));
+	gameBoard[7].push_back(new GamePiece(Queen, Royalty, sf::Vector2f(3, 7), White,9, true));
+	gameBoard[7].push_back(new GamePiece(King, Royalty, sf::Vector2f(4, 7), White,1000, true));
+	gameBoard[7].push_back(new GamePiece(Bishop, Right, sf::Vector2f(5, 7), White,3, true));
+	gameBoard[7].push_back(new GamePiece(Knight, Right, sf::Vector2f(6, 7), White,3, true));
+	gameBoard[7].push_back(new GamePiece(Rook, Right, sf::Vector2f(7, 7), White,5, true));
 
 	for (int i = 0; i < 8; i++)
 	{
-		gameBoard[6].push_back(new GamePiece(Pawn, NA, sf::Vector2f(i, 6), White, true));
+		gameBoard[6].push_back(new GamePiece(Pawn, NA, sf::Vector2f(i, 6), White,1, true));
 	}
 
 }
 
 //Tentative
-void GameState::initTextureMap()
+void GamePvPState::initTextureMap()
 {
 	textureRects[std::pair<Pieces,PieceColor>(Queen,Black)] = sf::IntRect(0, 0, 60, 60);
 	textureRects[std::pair<Pieces, PieceColor>(King, Black)] = sf::IntRect(60, 0, 60, 60);
@@ -135,7 +136,7 @@ void GameState::initTextureMap()
 	textureRects[std::pair<Pieces, PieceColor>(Pawn, White)] = sf::IntRect(300, 60, 60, 60);
 }
 
-void GameState::drawGameBoard()
+void GamePvPState::drawGameBoard()
 {//Concerns with scope of drawn shapes
 
 	float x = getContext().window->getSize().x;
@@ -194,7 +195,7 @@ void GameState::drawGameBoard()
 
 }
 
-void GameState::drawPiece(const GamePiece & gamePiece, float x, float y)
+void GamePvPState::drawPiece(const GamePiece & gamePiece, float x, float y)
 {
 	sf::Sprite pieceSprite;
 	if (gamePiece.piece != None)
@@ -211,7 +212,7 @@ void GameState::drawPiece(const GamePiece & gamePiece, float x, float y)
 	}
 }
 
-void GameState::drawPossibleMoves()
+void GamePvPState::drawPossibleMoves()
 {
 	if (possibleMoves != nullptr)
 	{
@@ -236,7 +237,7 @@ void GameState::drawPossibleMoves()
 	}
 }
 
-void GameState::swapColor(sf::RectangleShape & boardSquare)
+void GamePvPState::swapColor(sf::RectangleShape & boardSquare)
 {
 	if (boardSquare.getFillColor() == sf::Color::White)
 	{
@@ -249,7 +250,7 @@ void GameState::swapColor(sf::RectangleShape & boardSquare)
 }
 
 
-void GameState::mouseButtonPressed(const sf::Event & event)
+void GamePvPState::mouseButtonPressed(const sf::Event & event)
 {
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
@@ -274,20 +275,21 @@ void GameState::mouseButtonPressed(const sf::Event & event)
 				{
 					//Swap the players selected piece with boardCoords
 					movePiece(boardCoords);
+					thePlayers.switchTurn();
 				}
 				else if(inPossibleMoves(boardCoords))
 				{
 					//Capture a piece!
 					std::pair<Pieces, PieceColor> capPiece = capturePiece(boardCoords);
 					endGame(capPiece);
-
+					thePlayers.switchTurn();
 				}
 			}	
 		}
 	}
 }
 
-bool GameState::inPossibleMoves(sf::Vector2i selectedMove)
+bool GamePvPState::inPossibleMoves(sf::Vector2i selectedMove)
 {
 	if (possibleMoves != nullptr)
 	{
@@ -300,7 +302,7 @@ bool GameState::inPossibleMoves(sf::Vector2i selectedMove)
 	return false;
 }
 
-std::pair<Pieces, PieceColor> GameState::capturePiece(sf::Vector2i boardCoords)
+std::pair<Pieces, PieceColor> GamePvPState::capturePiece(sf::Vector2i boardCoords)
 {
 	sf::Vector2i selectedPiece = thePlayers.getSelectedPiece();
 	std::pair<Pieces, PieceColor> capPiece;
@@ -316,13 +318,13 @@ std::pair<Pieces, PieceColor> GameState::capturePiece(sf::Vector2i boardCoords)
 
 	gameBoard[selectedPiece.y][selectedPiece.x]->position = sf::Vector2f(selectedPiece);
 	if (possibleMoves != nullptr) { possibleMoves->clear(); }
-	thePlayers.switchTurn();
+	
 
 	return capPiece;
 }
 
 
-void GameState::movePiece(sf::Vector2i boardCoords)
+void GamePvPState::movePiece(sf::Vector2i boardCoords)
 {
 	sf::Vector2i selectedPiece = thePlayers.getSelectedPiece();
 	
@@ -333,11 +335,11 @@ void GameState::movePiece(sf::Vector2i boardCoords)
 	
 	if (possibleMoves != nullptr) { possibleMoves->clear(); }
 	
-	thePlayers.switchTurn();
+	
 }
 
 
-void GameState::endGame(const std::pair<Pieces, PieceColor> &piece)
+void GamePvPState::endGame(const std::pair<Pieces, PieceColor> &piece)
 {
 	if (piece.first == King)
 	{

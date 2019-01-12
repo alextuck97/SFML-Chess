@@ -1,7 +1,9 @@
 #include <SFML\Graphics.hpp>
 #include "StateStack.h"
-#include "GameState.h"
+#include "GamePvPState.h"
+#include "GamePvEState.h"
 #include "GameEndState.h"
+#include "GamePvEEnd.h"
 #include "Menu.h"
 
 

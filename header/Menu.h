@@ -19,8 +19,8 @@ private:
 	void mouseHoverHighlight(sf::Text &message);
 
 	void setChess();
-	void setPlay();
-	void setHelp();
+	void setPvP();
+	void setPvE();
 
 	void drawMenu();
 
@@ -28,8 +28,8 @@ private:
 	void mouseButtonPressed(const sf::Event &event);
 
 	sf::Text chess;
-	sf::Text play;
-	sf::Text help;
+	sf::Text pvp;
+	sf::Text pve;
 
 
 

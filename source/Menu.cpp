@@ -3,8 +3,8 @@
 MainMenu::MainMenu(StateStack & stack, Context context) : State(stack, context)
 {
 	setChess();
-	setPlay();
-	setHelp();
+	setPvP();
+	setPvE();
 }
 
 
@@ -59,17 +59,17 @@ void MainMenu::setChess()
 	chess.setColor(sf::Color::Red);
 }
 
-void MainMenu::setPlay()
+void MainMenu::setPvP()
 {
-	play.setString("Play");
-	play.setFont(*getContext().font2);
-	play.setColor(sf::Color::White);
+	pvp.setString("Player vs Player");
+	pvp.setFont(*getContext().font2);
+	pvp.setColor(sf::Color::White);
 }
-void MainMenu::setHelp()
+void MainMenu::setPvE()
 {
-	help.setString("Help");
-	help.setFont(*getContext().font2);
-	help.setColor(sf::Color::Blue);
+	pve.setString("Player vs Computer");
+	pve.setFont(*getContext().font2);
+	pve.setColor(sf::Color::Blue);
 }
 
 
@@ -77,22 +77,25 @@ void MainMenu::drawMenu()
 {
 	int x = getContext().window->getSize().x;
 	int y = getContext().window->getSize().y;
-
+	
 	chess.setCharacterSize(x * .07);
-	chess.setPosition(x * .38, y * .3);
+	pvp.setCharacterSize(x * .05);
+	pve.setCharacterSize(x * .05);
+	
+	int chess_x = chess.getLocalBounds().width;
+	int pvp_x = pvp.getLocalBounds().width;
+	int pve_x = pve.getLocalBounds().width;
 
-	play.setCharacterSize(x * .05);
-	play.setPosition(x * .43, y * .42);
+	chess.setPosition((x - chess_x) / 2, y * .3);
+	pvp.setPosition((x - pvp_x)/2, y * .42);
+	pve.setPosition((x - pve_x)/2, y * .50);
 
-	help.setCharacterSize(x * .05);
-	help.setPosition(x * .43, y * .50);
-
-	mouseHoverHighlight(play);
-	mouseHoverHighlight(help);
+	mouseHoverHighlight(pvp);
+	mouseHoverHighlight(pve);
 
 	getContext().window->draw(chess);
-	getContext().window->draw(play);
-	getContext().window->draw(help);
+	getContext().window->draw(pvp);
+	getContext().window->draw(pve);
 }
 
 void MainMenu::mouseButtonPressed(const sf::Event &event)
@@ -100,14 +103,22 @@ void MainMenu::mouseButtonPressed(const sf::Event &event)
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
 		sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(*(getContext().window)));
-		sf::FloatRect playBounds = play.getGlobalBounds();
-		sf::FloatRect helpBounds = help.getGlobalBounds();
+		sf::FloatRect pvpBounds = pvp.getGlobalBounds();
+		sf::FloatRect pveBounds = pve.getGlobalBounds();
 
-		if (mousePos.x > playBounds.left && mousePos.x < playBounds.left + playBounds.width)
+		if (mousePos.x > pvpBounds.left && mousePos.x < pvpBounds.left + pvpBounds.width)
 		{
-			if (mousePos.y > playBounds.top && mousePos.y < playBounds.top + playBounds.height)
+			if (mousePos.y > pvpBounds.top && mousePos.y < pvpBounds.top + pvpBounds.height)
 			{
-				State::requestStackPush(States::Game);
+				State::requestStackPush(States::GamePvP);
+			}
+		}
+
+		if (mousePos.x > pveBounds.left && mousePos.x < pveBounds.left + pveBounds.width)
+		{
+			if (mousePos.y > pveBounds.top && mousePos.y < pveBounds.top + pveBounds.height)
+			{
+				State::requestStackPush(States::GamePvE);
 			}
 		}
 	}

@@ -3,9 +3,11 @@
 Game::Game(sf::Font & font1, sf::Font &font2, PieceColor & winner) : mWindow(VideoMode(800, 600), "Chess"), font1(font1),
 font2(font2), mStack(State::Context(mWindow, font1, font2, winner))// mContext(mWindow),
 {
-	mStack.registerState<GameState>(States::Game);
+	mStack.registerState<GamePvPState>(States::GamePvP);
+	mStack.registerState<GamePvEState>(States::GamePvE);
 	mStack.registerState<GameEndState>(States::GameEnd);
 	mStack.registerState<MainMenu>(States::Menu);
+	mStack.registerState<PvEEndState>(States::GamePvEEnd);
 	mStack.pushState(States::Menu);
 }
 
@@ -13,10 +15,10 @@ font2(font2), mStack(State::Context(mWindow, font1, font2, winner))// mContext(m
 
 void Game::run()
 {
-
+	sf::Clock clock;
 	while (mWindow.isOpen())
 	{
-		
+		sf::Time dt = clock.restart();
 		sf::Event event;
 		while (mWindow.pollEvent(event))
 		{
@@ -28,7 +30,7 @@ void Game::run()
 				
 			}
 		}
-
+		mStack.update(dt);
 		render();
 	}
 

@@ -14,7 +14,9 @@ namespace States
 		None,
 		Title,
 		Menu,
-		Game,
+		GamePvP,
+		GamePvE,
+		GamePvEEnd,
 		GameEnd
 	};
 }

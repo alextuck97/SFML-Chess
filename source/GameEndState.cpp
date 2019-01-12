@@ -123,7 +123,7 @@ void GameEndState::mouseButtonPressed(const sf::Event &event)
 			{
 				State::requestStackPop();
 				State::requestStackPop();
-				State::requestStackPush(States::Game);
+				State::requestStackPush(States::GamePvP);
 			}
 		}
 		//Check if mouse in no bounds. Pop out to menu state

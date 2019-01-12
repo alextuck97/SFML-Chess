@@ -8,13 +8,13 @@
 #include "Moves.h"
 #include "Player.h"
 
-class GameState : public State
+class GamePvPState : public State
 {
 public:
 
-	GameState(StateStack & stack, Context context);
+	GamePvPState(StateStack & stack, Context context);
 
-	~GameState();
+	~GamePvPState();
 
 	virtual void draw();
 	virtual bool update(sf::Time dt);
@@ -22,8 +22,9 @@ public:
 
 	std::list<sf::Vector2f> * getMoves(GamePiece piece);
 	
+	Gameboard & getGameBoard() { return this->gameBoard; }
 
-private:
+
 	//Initialize both players pieces to starting positions
 	void initializeBoard();
 
@@ -39,7 +40,7 @@ private:
 	void swapColor(sf::RectangleShape & boardSquare);
 	
 	//Handles what happens when the mouse is clicked
-	void mouseButtonPressed(const sf::Event & event);
+	virtual void mouseButtonPressed(const sf::Event & event);
 
 	//Return true if the selected square is a possible move
 	bool inPossibleMoves(sf::Vector2i selectedMove);
@@ -51,7 +52,15 @@ private:
 	void movePiece(sf::Vector2i boardCoords);
 
 	//Takes a piece, checks if its a king and ends the game if so
-	void endGame(const std::pair<Pieces, PieceColor> &piece);
+	virtual void endGame(const std::pair<Pieces, PieceColor> &piece);
+
+	Player & getThePlayers() { return this->thePlayers; }
+
+	std::list<sf::Vector2f> * getPossibleMoves() { return this->possibleMoves; }
+
+	void setPossibleMoves(std::list<sf::Vector2f> * newMoves) { this->possibleMoves = newMoves; }
+
+	Moves & getMoves() { return mMoves; }
 
 private:
 

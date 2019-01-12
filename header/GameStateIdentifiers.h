@@ -21,8 +21,8 @@ enum Pieces
 	Knight,
 	Rook,
 	Bishop,
-	King,
-	Queen
+	Queen,
+	King
 };
 
 enum PieceColor
@@ -34,12 +34,13 @@ enum PieceColor
 
 struct GamePiece
 {
-	GamePiece(Pieces piece, Orientation orientation, sf::Vector2f &position, PieceColor color, bool inPlay);
+	GamePiece(Pieces piece, Orientation orientation, sf::Vector2f &position, PieceColor color,int value, bool inPlay);
 
 	Pieces piece;
 	Orientation orientation;
 	sf::Vector2f position;
 	PieceColor color;
+	int value;
 	bool inPlay;
 };
 
